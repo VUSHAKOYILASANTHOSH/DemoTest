@@ -41,7 +41,7 @@ stages:
         ArtifactName: $(artifactName)
         publishLocation: 'Container'
 
- - stage: Production
+- stage: Production
   dependsOn: QA
   variables: 
     Environment: Production
