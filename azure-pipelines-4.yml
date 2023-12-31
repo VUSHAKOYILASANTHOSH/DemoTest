@@ -1,0 +1,64 @@
+# azure-pipelines.yml
+
+trigger:
+- master
+pool:
+  name: default
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+  subscription: 'MPN Enterprise VSTS Subscription'
+  artifactName: 'drop'
+
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    steps:
+    - task: NuGetToolInstaller@1
+    - task: NuGetCommand@2
+      inputs:
+        restoreSolution: '$(solution)'
+    - task: VSBuild@1
+      inputs:
+        solution: '$(solution)'
+        msbuildArgs: >-
+          /p:DeployOnBuild=true 
+          /p:WebPublishMethod=Package 
+          /p:PackageAsSingleFile=true 
+          /p:SkipInvalidConfigurations=true 
+          /p:PackageLocation="$(Build.ArtifactStagingDirectory)"
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
+    - task: VSTest@2
+      inputs:
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: $(artifactName)
+        publishLocation: 'Container'
+
+- stage: QA
+  dependsOn: Build
+  variables: 
+    Environment: QA
+  jobs:
+  - template: deploy-appservice-template.yml
+    parameters:
+      environment: ${{ variables.environment }} 
+      webAppName: my-azure-app-service-qa
+      subscription: $(subscription)
+
+- stage: Production
+  dependsOn: QA
+  variables: 
+    Environment: Production
+  jobs:
+  - template: deploy-appservice-template.yml
+    parameters:
+      environment: ${{ variables.environment }} 
+      webAppName: my-azure-app-service-prod
+      subscription: $(subscription)
