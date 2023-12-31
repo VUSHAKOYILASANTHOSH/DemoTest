@@ -41,7 +41,9 @@ steps:
     PathtoPublish: '$(build.artifactstagingdirectory)'
     condition: succeededOrFailed()
 
-stage1:
+stages:
+-stage: Build
+  jobs:
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'AzureRM'
