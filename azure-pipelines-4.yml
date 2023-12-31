@@ -41,6 +41,17 @@ stages:
         ArtifactName: $(artifactName)
         publishLocation: 'Container'
 
+ - stage: Production
+  dependsOn: QA
+  variables: 
+    Environment: Production
+  jobs:
+  - template: deploy-appservice-template.yml
+    parameters:
+      environment: ${{ variables.environment }} 
+      webAppName: my-azure-app-service-prod
+      subscription: $(subscription)
+
 # deploy-appservice-template.yml
 
 parameters:
