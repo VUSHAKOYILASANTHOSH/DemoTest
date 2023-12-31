@@ -68,11 +68,12 @@ jobs:
     runOnce:
       deploy:
         steps:
-        - task: AzureRmWebAppDeployment@4
-          inputs:
-            ConnectionType: 'AzureRM'
-            azureSubscription: ${{ parameters.subscription }}
-            appType: 'webApp'
-            WebAppName: ${{ parameters.webAppName }}
-            packageForLinux: '$(Pipeline.Workspace)/${{ parameters.artifactName }}/**/*.zip'
-            enableXmlVariableSubstitution: true
+
+- task: AzureRmWebAppDeployment@4
+  inputs:
+  ConnectionType: 'AzureRM'
+  azureSubscription: ${{ parameters.subscription }}
+  appType: 'webApp'
+  WebAppName: ${{ parameters.webAppName }}
+  packageForLinux: '$(Pipeline.Workspace)/${{ parameters.artifactName }}/**/*.zip'
+  enableXmlVariableSubstitution: true
