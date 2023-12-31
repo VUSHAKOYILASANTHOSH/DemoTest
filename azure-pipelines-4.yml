@@ -61,7 +61,7 @@ parameters:
 - name: artifactName
   default: drop
 
-jobs:
+- jobs:
 - deployment: DeployAppService
   environment: ${{ parameters.environment }}
   strategy: 
