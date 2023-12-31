@@ -42,8 +42,9 @@ steps:
     condition: succeededOrFailed()
 
 stages:
--stage: Build
+-stage: Release
   jobs:
+  -job: release
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'AzureRM'
