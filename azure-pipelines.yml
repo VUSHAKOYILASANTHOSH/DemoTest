@@ -41,3 +41,11 @@ steps:
     PathtoPublish: '$(build.artifactstagingdirectory)'
     condition: succeededOrFailed()
 
+stage2:
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'DecemberSC'
+    appType: 'webApp'
+    WebAppName: 'postcardapp'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
