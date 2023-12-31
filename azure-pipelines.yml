@@ -27,14 +27,14 @@ steps:
 - task: VSBuild@1
   inputs:
     solution: '**/*.sln'
-
-- task: PublishSymbols@2
-- task: VSBuild@1
-  inputs:
-    solution: '**/*.sln'
     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
     platform: 'any cpu'
-- task: PublishBuildArtifacts@1
+- task: PublishSymbols@2
+  displayName: 'Publish symbols path'
+  inputs:
+    SearchPattern: '**\bin\**\*.pdb'
+    PublishSymbols: false
+  continueOnError: true
   displayName: 'Publish Artifact: drop'
   inputs:
     PathtoPublish: '$(build.artifactstagingdirectory)'
