@@ -51,4 +51,4 @@ steps:
     azureSubscription: 'DecemberSC'
     appType: 'webApp'
     WebAppName: 'demotestapp12345'
-    packageForLinux: 'drop'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
