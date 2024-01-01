@@ -24,11 +24,14 @@ steps:
   displayName: 'NuGet restore'
   inputs:
     restoreSolution: '$(Parameters.solution)'
-- task: VSBuild@1
+- task: MSBuild@1
   inputs:
     solution: '**/*.sln'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-    platform: 'any cpu'
+#- task: VSBuild@1
+#  inputs:
+#    solution: '**/*.sln'
+#    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+#    platform: 'any cpu'
 - task: PublishSymbols@2
   displayName: 'Publish symbols path'
   inputs:
